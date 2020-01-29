@@ -191,11 +191,18 @@ I don't have any computational background!
 
 ---
 
-# How did I get here?
+# Learning to code
 
-How did I learn to do everything you're about to learn?
+???
+Since you chose this parallel session, I assume you are not very familiar with coding and/or the Terminal? Is that true for everyone? 
 
-- Being lazy
+--
+
+Where to start learning code/Bash?
+
+--
+
+- Strive to be "lazy"
 
 --
 
@@ -203,11 +210,16 @@ How did I learn to do everything you're about to learn?
 
 --
 
-- Talking to others about "life hacks"
+- Talk to others about "life hacks"
 
 --
 
 - Metric tons of TRIAL AND ERROR (tears, manic screaming, blood...)
+
+
+--
+
+Code is reproducable and eliminates human error (unlike copy-pasting).
 
 ???
 Better to code sth in 4x the time it takes to do it manually, if it saves you 1000x the time in the long run!
@@ -237,8 +249,18 @@ This will save humanity countless hours!
   1. What is a terminal?
   2. How to navigate around your computer with the terminal?
   3. How to interact with text files?
-  4. How to combine multiple programs into a single command?
-  5. How to save file space with shortcuts
+
+
+---
+# What is a Terminal? And what is bash?
+
+A terminal is a window in which you communicate with the computer.
+Bash is the *language* you use to comunicate with the computer.
+
+Metaphorically:
+ - The Terminal is the room we are all in right now.
+  
+ - Bash is the language we are using to communicate (English).
 
 ---
 
@@ -637,7 +659,7 @@ $ cat ERR2020601.fastq.gz
 
 <br/>
 
-> **BONUS TIP TIME!** Never type a full filename! Start typing, then press <TAB> to autocomplete! No more pesky typos!
+> **BONUS TIP TIME!** Never type a full filename! Start typing, then press TAB to autocomplete! No more pesky typos!
 
 ---
 
@@ -712,7 +734,35 @@ Much better, now we see DNA sequences!
 
 ---
 
-## Yeah, but what EXACTLY is compression?
+## Taking it slow
+
+Using `cat`/`zcat`, we got the entire contents of the file printed to our screen.
+
+This is rarely what you want with large files like this one.
+
+First off, let's fully uncompress the file:
+```bash
+$ zcat ERR2020601.fastq.gz >ERR2020601.fastq
+```
+--
+
+You can now look through just parts of the file, which is way more useful!
+
+- `head` will show you just the top of the file.
+- While `tail` will only show the end.
+- Alternatively, you can use `less` to scroll through the entire file at your own pace.
+  - `less` will open a "viewer", so a window within your terminal. to quit press `q`.
+
+???
+Feel free to try these now.
+--
+
+> BONUS TIP TIME: Just like `zcat` is the `cat` of compressed files, <br>
+> `zless` is the `less` of compressed files!
+
+---
+
+## What EXACTLY is compression?
 
 .left-column[
 - Compression is a way of saving hard-disk space
@@ -720,8 +770,6 @@ Much better, now we see DNA sequences!
   - later translated back (decompression)
 ]
 
-???
-THISEAS
 
 --
 
@@ -753,14 +801,14 @@ these...
 
 ---
 
-# Muzak!
+# Music!
 
 .left-column-66[
 This iPod had a space of 5GB
  - Average uncompressed album: 640MB
  - Fits: 7.8125 Albums  
- - Songs per Album: 20  .small[\[_because Thiseas just listens to Disney soundtracks..._\]]
- - Total songs: 60
+ - Songs per Album: 20
+ - Total songs: 160
 ]
 
 .right-column-33[
@@ -771,7 +819,7 @@ This iPod had a space of 5GB
 
 --
 
-_But I had 800 songs, and still had space_ - we hear you call?
+_But I had 800 songs, and still had space_ - I hear you call?
 - Because of compression!
 - MP3 is a another type of compression specifically for music files
 
@@ -781,11 +829,12 @@ class: center,middle
 # Ok cool, but back to computers...
 
 ---
-
-# Asking the computer for help (it loves helping people)
+# Asking for help
 
 How to find out how much less space our FASTQ takes up because of compression? 
   - Let's ask the computer to help us find a way! 
+
+--
 
 First - how to find out what a program does? Ask `whatis`!
 
@@ -854,13 +903,18 @@ DESCRIPTION
 
 Scroll until you see `OPTIONS` - what does `--list` do?
 
+???
+`zcat` is just one way to call on `gzip` to uncompress the zipped file.
+
+It is similar to how the names "Snoop-Dogg" and "Snoop-Doggy-Dogg" are the same person.
+
 ---
 
 # Oooooooh
 
 The option `--list`/`-l` lists 
   - the size of a file in both compressed and uncompressed form
-  -as well as the compression ratio (how effective the 
+  - the compression ratio (how effective the 
 compression was). 
 
 --
@@ -885,89 +939,33 @@ $ gzip -l ERR2020601.fastq.gz
 
 Not bad! Our file 25.1% the size of the uncompressed file would.
 
+???
+Try to compress all large files before you share them with people.
+
+Also a good idea to compress data files that you don't actively use anymore, or REALLY large data files.
+
+That way you can turn some files that are 2GB into 0.5GB. It's free real estate!
 ---
 
 class: center,middle
-# Laziness 101: Minimising our work by maximising the work of the computer
 
-### Text Editing in the Terminal
+# Text Editing in the Terminal
 
 ---
+# Text Editing in the Terminal
 
-# One sample ain't enough
+Often, you will need to quickly edit the contents of a text file in your terminal. 
 
-
-<p align="center">
-  <img title="Source: https://giphy.com/gifs/reaction-FyKfqRxVbzciY" src="https://media.giphy.com/media/FyKfqRxVbzciY/giphy.gif">
-</p>
-
-Lets get 7 more!
-
-???
-
-One sample rarely gets you the high impact paper your supervisor lusts over anymore
-
---
-
-But typing the same `wget` command over and over isn't being lazy!
-
---
-
-Instead, we can supply `wget` a text file, with the link to each new FASTQ file.
-
+The most common way to do this is to use `nano`.
 ```bash
-$ wget -i <LIST_OF_URLS>.txt
+$ whatis nano
 ```
----
-
-# Text editing
-
-.left-column-66[
-But how can we make this file? 
-]
-
---
-
-.right-column-33[
-<p align="center">
-  <img title="Source: https://giphy.com/gifs/gameboy-nano-xfRgtflLgJtkY" src="https://media.giphy.com/media/xfRgtflLgJtkY/giphy.gif" width = "100%">
-</p>
-
-]
-
-
-
-.left-column-66[
-If you're absolutely insane you may look up `vim` 
-.small[_\[Thiseas' poison\]_]
-
-Or we can use `nano` which is much more user friendly.
-]
-
---
-
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-
-
-- `nano` is a text editor
-  - Similar to `TextMate`, `gedit` or `notepad`
-  - But runs in your terminal
-  - Main difference: how you 'save', 'close' etc.
-  - These are controlled with special key combinations 
-      - e.g. ctrl + c to copy text in word
-
+```
+nano (1)             - Nano's ANOther editor, an enhanced free Pico clone
+```
 
 ---
-
-# Lets do eet!
-
+# nano
 So open up the program with
 
 ```bash
@@ -975,68 +973,125 @@ $ nano
 ```
 --
 
+Upon running `nano` your screen will change. You are now in a "viewer window" (i.e. a window within your terminal).
 - Try typing something!
-- Look at the bottom of the window
-  - These correspond to different commands (save, exit, etc.)
-  - `^` corresponds to your `ctrl` or `cmd` keys on your keyboard
-
-- Move around with your arrow keys.
+- Move the white cursor around with your arrow keys.
 
 --
 
-- To save the contents of your file
+You can start typing whatever you want to save in the file, just like you would in Notepad.
+
+To go to the next line, just press Enter.
+???
+If you cannot think of anything you want to write currently, just write the names of your two favourite fruits!
+
+Banana Mango
+
+---
+
+# IT'S A TRAP!
+
+You are now trapped in the nano viewer!
+
+--
+
+<p align="center">
+  <img title="Source: https://media.giphy.com/media/3ornka9rAaKRA2Rkac/giphy.gif" src="https://media.giphy.com/media/3ornka9rAaKRA2Rkac/giphy.gif" width="50%">
+</p>
+
+--
+
+Your mouse has no power here! How can you get out?
+
+<p align="center">
+  <img title="Source: https://media.giphy.com/media/RX3vhj311HKLe/giphy.gif" src="https://media.giphy.com/media/RX3vhj311HKLe/giphy.gif" width="50%">
+</p>
+
+---
+
+# nano
+
+- Look at the bottom of the window for keyboard shortcuts
+
+  - These correspond to different commands (save, exit, etc.)
+  - `^` corresponds to your `ctrl` key on your keyboard
+
+--
+<br>
+<br>
+<br>
+
+- To save the contents of your file:
   1. Initiate exit with `ctrl + x`
   2. You will be prompted to 'Save modified buffer'.
   3. Press `y` on your keyboard to agree
-  4. Set the file name as `~/BareBonesBash/Ftp.Link.txt`
+  4. Set the file name as `my_file.txt`
   5. Press `enter` to save
 
 All done!
 
 ---
 
-# Not ANOTHER typo!?
-
-Check that the file was successfully generated.
+# Editing existing files
 
 ```bash
-$ cd ~/BareBonesBash/
 $ ls
-
 ```
+```
+my_file.txt
+```
+???
+You can now see the file you just created in your active directory.
+
 --
 
-Great! There is a file there! But OH NO! We want to have multiple _links_ not a Link!
+You can now edit it's contents by telling nano which file you wish to edit.
+```bash
+nano my_file.txt
+```
 
-<p align="center">
-  <img title="Source: https://giphy.com/gifs/the-legend-of-zelda-link-funny-RkymcOKhoCRTG" src="https://media.giphy.com/media/RkymcOKhoCRTG/giphy.gif" width="45%">
-  <img title="Source: https://giphy.com/gifs/link-the-legend-of-zelda-NVBR6cLvUjV9C" src="https://media3.giphy.com/media/NVBR6cLvUjV9C/giphy.gif" width="30%">
-</p>
+--
+In the viewer window you will now see that your two favourite fruits are already in the file.
 
-Lets remove that file, and start again. 
+Let's add your **least** favourite vegetable at the end of the list!
+
+???
+Probably okra
+
+--
+
+- Follow the same procedure to save the file.
+- You will notice that this time the filename was already there at the third step. 
+- This is essentially the same as the "Overwrite changes" pop-up in Notepad/Word.
 
 ---
 
+.left-column[
 # Delete...
 
-.left-column[
+
+Time to hide our tracks...
+
 So far, we learnt `rmdir` to remove a directory. 
 
 To remove a file, we can instead use `rm` for – you guessed it! – **r**e**m**ove. 
 ]
+???
+I bet it felt good to share your most/least favourite fruits and veggies with the computer!
 
+But now it's time to make sure it keeps your secret FOREVER!
 --
 
 .right-column[
 <p align="center">
-  <img title="Source: https://giphy.com/gifs/trash-desktop-delete-pHWPC1N5IZGVTfRgsN" src="https://media.giphy.com/media/pHWPC1N5IZGVTfRgsN/giphy.gif">
+  <img title="Source: https://giphy.com/gifs/trash-desktop-delete-pHWPC1N5IZGVTfRgsN" src="https://media.giphy.com/media/pHWPC1N5IZGVTfRgsN/giphy.gif" width="90%">
 </p>
 ]
 
 .left-column[
 
 ```bash
-$ rm Ftp.Link.txt
+$ rm my_file.txt
 $ ls
 ```
 <br/>
@@ -1045,109 +1100,33 @@ And it's gone!
 ]
 
 ---
+# Quick recap
 
-# Anyway...
-
-Now we've fixed our typo 
-
-1. Open `nano` again
-2. Go to [https://tinyurl.com/BBB-FtpLinks](https://tinyurl.com/BBB-FtpLinks) in your .small[\[_real life_\]] internet browser
-3. Copy the text on the webpage
-4. .small[\[_back down the bash rabbit hole_\]] paste the text into `nano`
-
-> Note the `#`, this means the line is **commented out** as we've already downloaded this file!
-
-???
-This is an example of a programme that understands # as a comment in its input!
-
---
-
-.left-column-66[
-So again to recap exiting and save a file in nano we do the following dance: 
-  1. Initiate exit with `ctrl + x`
-  2. You will be prompted to `Save modified buffer`.
-  3. Press `y` on your keyboard to agree
-  4. Set the file name as `~/BareBonesBash/Ftp.Links.txt`
-  5. Press `enter` to save
-]
-
-.right-column-33[
-  <p align="center">
-  <img title="Source: https://giphy.com/gifs/dancing-dance-star-wars-6fScAIQR0P0xW" src="https://media.giphy.com/media/6fScAIQR0P0xW/giphy.gif">
-</p>
-]
-
----
-
-# Did it save?
-
-How can we check that the links saved correctly?
-
---
-
-<p align = "center">
-<img title="Source: https://giphy.com/gifs/meow-descriptive-noise-x4YHSKRpYQhLq" src="https://media.giphy.com/media/x4YHSKRpYQhLq/giphy.gif" width = "50%"> 
-</p>
+- `pwd` Show path to current directory
+- `ls` list the contents of a directory
+- `mkdir`/`rmdir` make/remove an empty directory
+- `rm` remove a file
+- `cd` change directory
+- `mv` move or rename
+- `wget`/`curl` download a file from a remote server
+- `zcat`/`cat` Print contents of a (compressed) file
+- `head` Print first 10 lines of a file
+- `tail` Print last 10 lines of a file
+- `zless`/`less` Open a (compressed) file in a viewer window
+- `gzip -l` Show compression information for a file
+- `whatis` Show a short description of a program
+- `man` View a detailed manual of a program in a viewer window
+- `nano` Text editor for the Terminal
 
 
-```bash
-$ cat ~/BareBonesBash/Ftp.Links.txt
-
-```
-
---
-
-```
-ftp.sra.ebi.ac.uk/vol1/fastq/ERR202/009/ERR2020609/ERR2020609.fastq.gz
-ftp.sra.ebi.ac.uk/vol1/fastq/ERR202/001/ERR2020611/ERR2020611.fastq.gz
-ftp.sra.ebi.ac.uk/vol1/fastq/ERR202/007/ERR2020567/ERR2020567.fastq.gz
-ftp.sra.ebi.ac.uk/vol1/fastq/ERR202/005/ERR2020565/ERR2020565.fastq.gz
-#ftp.sra.ebi.ac.uk/vol1/fastq/ERR202/001/ERR2020601/ERR2020601.fastq.gz
-ftp.sra.ebi.ac.uk/vol1/fastq/ERR202/003/ERR2020613/ERR2020613.fastq.gz
-ftp.sra.ebi.ac.uk/vol1/fastq/ERR202/008/ERR2020618/ERR2020618.fastq.gz
-ftp.sra.ebi.ac.uk/vol1/fastq/ERR202/007/ERR2020617/ERR2020617.fastq.gz
-```
-
----
-
-# Zoom zoom zoom!
-
-Now to download all the files stored in the URLs. IN ONE GO! 
-
-<p align="center">
-  <img title="Source: https://giphy.com/gifs/aliens-oAEoEC7vdf1QI" src="https://media.giphy.com/media/oAEoEC7vdf1QI/giphy.gif" width="30%">
-</p>
-
---
-
-As before: 
-  - give a file to `wget` with URLs with the flag `-i`, for "**i**nput". 
-
-```bash
-$ cd ~/BareBonesBash
-$ wget -i ~/BareBonesBash/Ftp.Links.txt
-
-```
-
-<p align="center"><b> One at a time!</b> .small[_\[Last time we DDoS'd the ENA\]_ 😅] </p>
-
----
-
-class: center,middle
-
-# The road so far
-
-???
-JAMES
 ---
 
 # Woohoo!
 
-Well done **you** for putting up with an inordinate amount of internet memes, gifs, terrible pop-culture, and video game references!
+Well done **you** for putting up with all the internet memes, gifs, and terrible pop-culture references!
 
 <br/>
 <p align="center">
-  <img title="Source: https://giphy.com/gifs/csi-miami-horatio-caine-xPGkOAdiIO3Is" src="https://media1.giphy.com/media/xPGkOAdiIO3Is/giphy.gif" width="30%"> 
   <img title="Source: https://giphy.com/gifs/swag-80s-sunglasses-62PP2yEIAZF6g" src="https://media.giphy.com/media/62PP2yEIAZF6g/giphy-downsized.gif" width="40%">
 </p>
 <br/>
@@ -1156,40 +1135,6 @@ Well done **you** for putting up with an inordinate amount of internet memes, gi
 You should now feel more comfortable:
   - How to move around using the Terminal, 
   - Using basic commands to view, create, and manipulate files and directories.
-
----
-
-# Enter the janitor!
-
-Despite being lazy - you should ALWAYS keep your room tidy.
-
-- This stops losing files
-- Prevents getting lost in a maze of directories
-- Accidently permanently deleting a days worth of work .small[
-
-\[_don't ask how many times this has happened._\]]
-
---
-
-.left-column[
-Lets remove:
-  - the  `~/BareBonesBash` directory 
-  - **all of its contents**. 
-
-```bash
-$ cd ~     # Don't delete a directory 
-         # while we are still in it! 
-$ rm -r ~/BareBonesBash
-```
-]
-
---
-
-.right-column[
-<p align="center">
-  <img title="Source: https://i.imgur.com/lcxyE0D.gif" src="https://i.imgur.com/lcxyE0D.gif" width="80%">
-</p>
-]
 
 ---
 
